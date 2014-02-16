@@ -69,7 +69,8 @@ namespace bandit {
     listener.test_run_starting();
 
     bool hard_skip = false;
-    detail::bandit_context global_context("", hard_skip);
+	bool list_tests = opt.list_tests();
+    detail::bandit_context global_context("", hard_skip, list_tests);
     context_stack.push_back(&global_context);
 
     for_each(specs.begin(), specs.end(), call_func);
