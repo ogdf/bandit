@@ -25,12 +25,17 @@ namespace bandit {
         return std::unique_ptr<detail::listener>(new xunit_reporter(*formatter));
       }
 
+      if(name == "dots")
+      {
+        return std::unique_ptr<detail::listener>(new dots_reporter(*formatter, colorizer));
+      }
+
       if(name == "spec")
       {
         return std::unique_ptr<detail::listener>(new spec_reporter(*formatter, colorizer));
       }
 
-      return std::unique_ptr<detail::listener>(new dots_reporter(*formatter, colorizer));
+      return std::unique_ptr<detail::listener>(new info_reporter(*formatter, colorizer));
     }
 
     typedef std::function<listener_ptr (const std::string&, const failure_formatter*)> reporter_factory_fn;
