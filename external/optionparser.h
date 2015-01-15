@@ -1406,7 +1406,7 @@ public:
   {
   }
 
-  bool perform(Option&)
+  bool perform(Option&) override
   {
     if (*buffer_max == 0x7fffffff)
       return false; // overflow protection: don't accept number of options that doesn't fit signed int
@@ -1446,7 +1446,7 @@ public:
     parser.op_count = bufidx;
   }
 
-  bool perform(Option& option)
+  bool perform(Option& option) override
   {
     if (bufmax < 0 || parser.op_count < bufmax)
     {
@@ -1464,7 +1464,7 @@ public:
     return true; // NOTE: an option that is discarded because of a full buffer is not fatal
   }
 
-  bool finished(int numargs, const char** args)
+  bool finished(int numargs, const char** args) override
   {
     // only overwrite non-option argument list if there's at least 1
     // new non-option argument. Otherwise we keep the old list. This
@@ -1714,7 +1714,7 @@ struct PrintUsageImplementation
   {
     Function* write;
 
-    virtual void operator()(const char* str, int size)
+    virtual void operator()(const char* str, int size) override
     {
       (*write)(str, size);
     }
@@ -1735,7 +1735,7 @@ struct PrintUsageImplementation
   {
     OStream& ostream;
 
-    virtual void operator()(const char* str, int size)
+    virtual void operator()(const char* str, int size) override
     {
       ostream.write(str, size);
     }
@@ -1756,7 +1756,7 @@ struct PrintUsageImplementation
   {
     const Temporary& userstream;
 
-    virtual void operator()(const char* str, int size)
+    virtual void operator()(const char* str, int size) override
     {
       userstream.write(str, size);
     }
@@ -1779,7 +1779,7 @@ struct PrintUsageImplementation
     Syscall* write;
     int fd;
 
-    virtual void operator()(const char* str, int size)
+    virtual void operator()(const char* str, int size) override
     {
       (*write)(fd, str, size);
     }
@@ -1800,7 +1800,7 @@ struct PrintUsageImplementation
     Function* fwrite;
     Stream* stream;
 
-    virtual void operator()(const char* str, int size)
+    virtual void operator()(const char* str, int size) override
     {
       (*fwrite)(str, size, 1, stream);
     }
