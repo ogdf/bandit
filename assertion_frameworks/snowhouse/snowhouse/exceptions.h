@@ -15,9 +15,9 @@ namespace snowhouse {
   class ExceptionStorage
   {
   public:
-    static std::auto_ptr<ExceptionType>& last_exception()
+    static std::unique_ptr<ExceptionType>& last_exception()
     {
-      static std::auto_ptr<ExceptionType> last;
+      static std::unique_ptr<ExceptionType> last;
       return last;
     }
     
@@ -56,7 +56,7 @@ ExceptionStorage<EXCEPTION_TYPE> IGLOO_CONCAT(IGLOO_storage_, __LINE__); IGLOO_C
   } \
   catch (const EXCEPTION_TYPE& e) \
   { \
-    ExceptionStorage<EXCEPTION_TYPE>::last_exception() = std::auto_ptr<EXCEPTION_TYPE>(new EXCEPTION_TYPE(e)); \
+    ExceptionStorage<EXCEPTION_TYPE>::last_exception() = std::unique_ptr<EXCEPTION_TYPE>(new EXCEPTION_TYPE(e)); \
   } \
   catch(...) \
   { \
