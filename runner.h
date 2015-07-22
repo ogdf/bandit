@@ -80,7 +80,9 @@ namespace bandit {
 
     for_each(specs.begin(), specs.end(), call_func);
 
-    listener.test_run_complete();
+    if(!opt.list_tests()) {
+      listener.test_run_complete();
+    }
 
     return listener.did_we_pass() ? 0 : 1;
   }
