@@ -27,7 +27,7 @@ namespace bandit { namespace detail {
   };
   typedef std::unique_ptr<run_policy> run_policy_ptr;
 
-  inline run_policy& registered_run_policy(run_policy* policy = NULL)
+  inline run_policy& registered_run_policy(run_policy* policy = nullptr)
   {
     static struct run_policy* policy_;
 

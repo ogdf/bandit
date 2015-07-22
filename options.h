@@ -20,7 +20,7 @@ namespace bandit { namespace detail {
 
       bool help() const
       {
-        return options_[HELP] != NULL;
+        return options_[HELP] != nullptr;
       }
 
       void print_usage() const
@@ -30,12 +30,12 @@ namespace bandit { namespace detail {
 
       bool version() const
       {
-        return options_[VERSION] != NULL;
+        return options_[VERSION] != nullptr;
       }
 
       bool list_tests() const
       {
-        return options_[LIST_TESTS] != NULL;
+        return options_[LIST_TESTS] != nullptr;
       }
 
       const char* reporter() const
@@ -45,7 +45,7 @@ namespace bandit { namespace detail {
 
       bool no_color() const
       {
-        return options_[NO_COLOR] != NULL;
+        return options_[NO_COLOR] != nullptr;
       }
 
       typedef enum
@@ -78,7 +78,7 @@ namespace bandit { namespace detail {
 
       bool break_on_failure() const
       {
-          return options_[BREAK_ON_FAILURE] != NULL;
+          return options_[BREAK_ON_FAILURE] != nullptr;
       }
 
       private:

@@ -25,14 +25,14 @@ namespace snowhouse {
     
     ~ExceptionStorage()
     {
-      last_exception().reset(NULL);
+      last_exception().reset(nullptr);
     }
   };
     
   template <typename ExceptionType>
   inline ExceptionType& LastException()
   {
-    if(ExceptionStorage<ExceptionType>::last_exception().get() == NULL)
+    if(ExceptionStorage<ExceptionType>::last_exception().get() == nullptr)
     {
       Assert::Failure("No exception was stored");
     }
