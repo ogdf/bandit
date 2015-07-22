@@ -33,6 +33,11 @@ namespace bandit { namespace detail {
         return options_[VERSION] != NULL;
       }
 
+      bool list_tests() const
+      {
+        return options_[LIST_TESTS] != NULL;
+      }
+
       const char* reporter() const
       {
         return options_[REPORTER].arg;
@@ -71,9 +76,14 @@ namespace bandit { namespace detail {
         return options_[ONLY].arg ? options_[ONLY].arg : "";
       }
 
+      bool break_on_failure() const
+      {
+          return options_[BREAK_ON_FAILURE] != NULL;
+      }
+
       private:
-        enum option_index { UNKNOWN, VERSION, HELP, REPORTER, NO_COLOR, 
-          FORMATTER, SKIP, ONLY };
+        enum option_index { UNKNOWN, VERSION, HELP, REPORTER, NO_COLOR,
+          FORMATTER, SKIP, ONLY, BREAK_ON_FAILURE, LIST_TESTS };
 
         static const option::Descriptor* usage()
         {
@@ -88,6 +98,8 @@ namespace bandit { namespace detail {
             {FORMATTER, 0, "", "formatter", option::Arg::Optional, "  --formatter=<formatter>, \tSelect formatting of errors (default, vs)"},
             {SKIP, 0, "", "skip", option::Arg::Optional, "  --skip=<substring>, \tskip all 'describe' and 'it' containing substring"},
             {ONLY, 0, "", "only", option::Arg::Optional, "  --only=<substring>, \tonly run 'describe' and 'it' containing substring"},
+            {BREAK_ON_FAILURE, 0, "", "break-on-failure", option::Arg::Optional, "  --break-on-failure, \tstop test run on first failing test"},
+            {LIST_TESTS, 0, "", "list-tests", option::Arg::None, "  --list-tests, \tLists all tests."},
             {0, 0, 0, 0, 0, 0}
           };
 

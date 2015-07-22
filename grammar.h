@@ -3,15 +3,29 @@
 
 namespace bandit {
 
+  bool has_context_with_list_tests(const detail::contextstack_t& contexts)
+  {
+    detail::contextstack_t::const_iterator it;
+    for(it = contexts.begin(); it != contexts.end(); it++)
+    {
+      if((*it)->list_tests())
+      {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   inline void describe(const char* desc, detail::voidfunc_t func,
       detail::listener& listener, detail::contextstack_t& context_stack,
-      bool hard_skip = false)
+      bool hard_skip = false, bool list_tests = false)
   {
     listener.context_starting(desc);
 
     context_stack.back()->execution_is_starting();
 
-    detail::bandit_context ctxt(desc, hard_skip);
+    detail::bandit_context ctxt(desc, hard_skip, list_tests);
 
     context_stack.push_back(&ctxt);
     try
@@ -78,11 +92,27 @@ namespace bandit {
     it_skip(desc, func, detail::registered_listener());
   }
 
+  inline void it_list(const char* desc, detail::voidfunc_t, detail::listener& listener)
+  {
+    listener.it_list(desc);
+  }
+  
+  inline void it_list(const char* desc, detail::voidfunc_t func)
+  {
+    it_list(desc, func, detail::registered_listener());
+  }
+
   inline void it(const char* desc, detail::voidfunc_t func, detail::listener& listener,
       detail::contextstack_t& context_stack, 
       bandit::adapters::assertion_adapter& assertion_adapter, 
-      const detail::run_policy& run_policy)
+      detail::run_policy& run_policy)
   {
+    if(has_context_with_list_tests(context_stack))
+	{
+      it_list(desc, func, listener);
+      return;
+    }
+
     if(!run_policy.should_run(desc, context_stack))
     {
       it_skip(desc, func, listener);
@@ -105,31 +135,59 @@ namespace bandit {
       });
     };
 
+    bool we_have_been_successful_so_far = false;
     try
     {
       assertion_adapter.adapt_exceptions([&](){
           run_before_eaches();
 
           func();
-          listener.it_succeeded(desc);
+          we_have_been_successful_so_far = true;
       });
     }
     catch(const bandit::detail::assertion_exception& ex)
     {
       listener.it_failed(desc, ex);
+      run_policy.encountered_failure();
+    }
+    catch(const std::exception& ex)
+    {
+      std::string err = std::string("exception: ") + ex.what();
+      listener.it_failed(desc, bandit::detail::assertion_exception(err));
+      run_policy.encountered_failure();
     }
     catch(...)
     {
       listener.it_unknown_error(desc);
+      run_policy.encountered_failure();
     }
 
     try
     {
-      run_after_eaches();
+      assertion_adapter.adapt_exceptions([&](){
+          run_after_eaches();
+
+          if(we_have_been_successful_so_far) 
+          {
+            listener.it_succeeded(desc);
+          }
+      });
+    }
+    catch(const bandit::detail::assertion_exception& ex)
+    {
+      listener.it_failed(desc, ex);
+      run_policy.encountered_failure();
+    }
+    catch(const std::exception& ex)
+    {
+      std::string err = std::string("exception: ") + ex.what();
+      listener.it_failed(desc, bandit::detail::assertion_exception(err));
+      run_policy.encountered_failure();
     }
     catch(...)
     {
       listener.it_unknown_error(desc);
+      run_policy.encountered_failure();
     }
   }
 
@@ -138,8 +196,6 @@ namespace bandit {
     it(desc, func, detail::registered_listener(), detail::context_stack(), 
         detail::registered_adapter(), detail::registered_run_policy());
   }
-
-
 }
 
 #endif

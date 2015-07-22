@@ -7,7 +7,7 @@ namespace bandit {
 
     inline run_policy_ptr create_run_policy(const options& opt)
     {
-      return run_policy_ptr(new bandit_run_policy(opt.skip(), opt.only()));
+      return run_policy_ptr(new bandit_run_policy(opt.skip(), opt.only(), opt.break_on_failure()));
     }
 
     inline listener_ptr create_reporter(const options& opt,
@@ -74,7 +74,8 @@ namespace bandit {
     listener.test_run_starting();
 
     bool hard_skip = false;
-    detail::bandit_context global_context("", hard_skip);
+	bool list_tests = opt.list_tests();
+    detail::bandit_context global_context("", hard_skip, list_tests);
     context_stack.push_back(&global_context);
 
     for_each(specs.begin(), specs.end(), call_func);
