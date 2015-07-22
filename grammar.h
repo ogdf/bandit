@@ -3,7 +3,7 @@
 
 namespace bandit {
 
-  bool has_context_with_list_tests(const detail::contextstack_t& contexts)
+  inline bool has_context_with_list_tests(const detail::contextstack_t& contexts)
   {
     detail::contextstack_t::const_iterator it;
     for(it = contexts.begin(); it != contexts.end(); it++)
