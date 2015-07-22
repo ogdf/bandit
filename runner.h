@@ -15,6 +15,11 @@ namespace bandit {
     {
       std::string name(opt.reporter() ? opt.reporter() : "");
 
+      if(name == "spec" || opt.list_tests())
+      {
+        return std::unique_ptr<detail::listener>(new spec_reporter(*formatter, colorizer));
+      }
+
       if(name == "singleline")
       {
         return std::unique_ptr<detail::listener>(new single_line_reporter(*formatter, colorizer));
@@ -28,11 +33,6 @@ namespace bandit {
       if(name == "dots")
       {
         return std::unique_ptr<detail::listener>(new dots_reporter(*formatter, colorizer));
-      }
-
-      if(name == "spec")
-      {
-        return std::unique_ptr<detail::listener>(new spec_reporter(*formatter, colorizer));
       }
 
       return std::unique_ptr<detail::listener>(new info_reporter(*formatter, colorizer));
@@ -74,7 +74,7 @@ namespace bandit {
     listener.test_run_starting();
 
     bool hard_skip = false;
-	bool list_tests = opt.list_tests();
+    bool list_tests = opt.list_tests();
     detail::bandit_context global_context("", hard_skip, list_tests);
     context_stack.push_back(&global_context);
 
