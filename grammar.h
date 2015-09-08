@@ -42,16 +42,20 @@ namespace bandit {
     listener.context_ended(desc);
   }
 
-  inline void describe(const char* desc, detail::voidfunc_t func)
+  inline void describe(const char* desc, detail::voidfunc_t func, bool skip = false)
   {
-    describe(desc, func, detail::registered_listener(), detail::context_stack());
+    describe(desc, func, detail::registered_listener(), detail::context_stack(), skip);
+  }
+
+  inline void describe(const std::string &desc, detail::voidfunc_t func, bool skip = false)
+  {
+    describe(desc.c_str(), func, detail::registered_listener(), detail::context_stack(), skip);
   }
 
   inline void describe_skip(const char* desc, detail::voidfunc_t func,
       detail::listener& listener, detail::contextstack_t& context_stack)
   {
-    bool skip = true;
-    describe(desc, func, listener, context_stack, skip);
+    describe(desc, func, listener, context_stack, true);
   }
 
   inline void describe_skip(const char* desc, detail::voidfunc_t func)
@@ -60,7 +64,13 @@ namespace bandit {
         detail::context_stack());
   }
 
-  inline void before_each(detail::voidfunc_t func, 
+  inline void describe_skip(const std::string &desc, detail::voidfunc_t func)
+  {
+    describe_skip(desc.c_str(), func, detail::registered_listener(),
+        detail::context_stack());
+  }
+
+  inline void before_each(detail::voidfunc_t func,
       detail::contextstack_t& context_stack)
   {
     context_stack.back()->register_before_each(func);
@@ -92,6 +102,11 @@ namespace bandit {
     it_skip(desc, func, detail::registered_listener());
   }
 
+  inline void it_skip(const std::string &desc, detail::voidfunc_t func)
+  {
+    it_skip(desc.c_str(), func, detail::registered_listener());
+  }
+
   inline void it_list(const char* desc, detail::voidfunc_t, detail::listener& listener)
   {
     listener.it_list(desc);
@@ -100,6 +115,11 @@ namespace bandit {
   inline void it_list(const char* desc, detail::voidfunc_t func)
   {
     it_list(desc, func, detail::registered_listener());
+  }
+
+  inline void it_list(const std::string &desc, detail::voidfunc_t func)
+  {
+    it_list(desc.c_str(), func, detail::registered_listener());
   }
 
   inline void it(const char* desc, detail::voidfunc_t func, detail::listener& listener,
@@ -191,10 +211,27 @@ namespace bandit {
     }
   }
 
-  inline void it(const char* desc, detail::voidfunc_t func)
+  inline void it(const std::string &desc, detail::voidfunc_t func, detail::listener& listener,
+      detail::contextstack_t& context_stack,
+      bandit::adapters::assertion_adapter& assertion_adapter,
+      detail::run_policy& run_policy)
   {
-    it(desc, func, detail::registered_listener(), detail::context_stack(), 
-        detail::registered_adapter(), detail::registered_run_policy());
+    it(desc.c_str(), func, listener, context_stack, assertion_adapter, run_policy);
+  }
+
+  inline void it(const char* desc, detail::voidfunc_t func, bool skip = false)
+  {
+    if (skip) {
+      it_skip(desc, func);
+    } else {
+      it(desc, func, detail::registered_listener(), detail::context_stack(),
+         detail::registered_adapter(), detail::registered_run_policy());
+    }
+  }
+
+  inline void it(const std::string &desc, detail::voidfunc_t func, bool skip = false)
+  {
+    it(desc.c_str(), func, skip);
   }
 }
 
