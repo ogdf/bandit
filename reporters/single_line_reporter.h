@@ -17,13 +17,13 @@ namespace bandit { namespace detail {
 
 	single_line_reporter& operator=(const single_line_reporter&) { return *this; }
 
-    void test_run_complete() 
+    void test_run_complete()
     {
       progress_reporter::test_run_complete();
 
       stm_ << std::endl;
 
-      test_run_summary summary(specs_run_, specs_failed_, specs_succeeded_, specs_skipped_, failures_, 
+      test_run_summary summary(specs_run_, specs_failed_, specs_succeeded_, specs_skipped_, failures_,
           test_run_errors_, colorizer_);
       summary.write(stm_);
     }
@@ -39,13 +39,13 @@ namespace bandit { namespace detail {
       test_run_errors_.push_back(ss.str());
     }
 
-    void it_starting(const char* desc) 
+    void it_starting(const char* desc)
     {
       print_status_line();
       progress_reporter::it_starting(desc);
     }
 
-    void it_succeeded(const char* desc) 
+    void it_succeeded(const char* desc)
     {
       progress_reporter::it_succeeded(desc);
       print_status_line();

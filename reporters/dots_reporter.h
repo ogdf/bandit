@@ -5,7 +5,7 @@ namespace bandit { namespace detail {
 
   struct dots_reporter : public progress_reporter
   {
-    dots_reporter(std::ostream& stm, const failure_formatter& failure_formatter, 
+    dots_reporter(std::ostream& stm, const failure_formatter& failure_formatter,
         const detail::colorizer& colorizer)
       : progress_reporter(failure_formatter), stm_(stm), colorizer_(colorizer)
     {}
@@ -16,13 +16,13 @@ namespace bandit { namespace detail {
 
 	dots_reporter& operator=(const dots_reporter&) { return *this; }
 
-    void test_run_complete() 
+    void test_run_complete()
     {
       progress_reporter::test_run_complete();
 
       stm_ << std::endl;
 
-      test_run_summary summary(specs_run_, specs_failed_, specs_succeeded_, specs_skipped_, failures_, 
+      test_run_summary summary(specs_run_, specs_failed_, specs_succeeded_, specs_skipped_, failures_,
           test_run_errors_, colorizer_);
       summary.write(stm_);
       stm_.flush();
@@ -39,7 +39,7 @@ namespace bandit { namespace detail {
       test_run_errors_.push_back(ss.str());
     }
 
-    void it_succeeded(const char* desc) 
+    void it_succeeded(const char* desc)
     {
       progress_reporter::it_succeeded(desc);
       stm_ << colorizer_.green() << "." << colorizer_.reset();

@@ -60,7 +60,7 @@ namespace bandit {
 
   inline void describe_skip(const char* desc, detail::voidfunc_t func)
   {
-    describe_skip(desc, func, detail::registered_listener(), 
+    describe_skip(desc, func, detail::registered_listener(),
         detail::context_stack());
   }
 
@@ -81,7 +81,7 @@ namespace bandit {
     before_each(func, detail::context_stack());
   }
 
-  inline void after_each(detail::voidfunc_t func, 
+  inline void after_each(detail::voidfunc_t func,
       detail::contextstack_t& context_stack)
   {
     context_stack.back()->register_after_each(func);
@@ -96,7 +96,7 @@ namespace bandit {
   {
     listener.it_skip(desc);
   }
-  
+
   inline void it_skip(const char* desc, detail::voidfunc_t func)
   {
     it_skip(desc, func, detail::registered_listener());
@@ -111,7 +111,7 @@ namespace bandit {
   {
     listener.it_list(desc);
   }
-  
+
   inline void it_list(const char* desc, detail::voidfunc_t func)
   {
     it_list(desc, func, detail::registered_listener());
@@ -123,8 +123,8 @@ namespace bandit {
   }
 
   inline void it(const char* desc, detail::voidfunc_t func, detail::listener& listener,
-      detail::contextstack_t& context_stack, 
-      bandit::adapters::assertion_adapter& assertion_adapter, 
+      detail::contextstack_t& context_stack,
+      bandit::adapters::assertion_adapter& assertion_adapter,
       detail::run_policy& run_policy)
   {
     if(has_context_with_list_tests(context_stack))
@@ -187,7 +187,7 @@ namespace bandit {
       assertion_adapter.adapt_exceptions([&](){
           run_after_eaches();
 
-          if(we_have_been_successful_so_far) 
+          if(we_have_been_successful_so_far)
           {
             listener.it_succeeded(desc);
           }

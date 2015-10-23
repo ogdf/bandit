@@ -25,11 +25,11 @@ namespace bandit {
           : desc_(desc), hard_skip_(hard_skip), list_tests_(list_tests), is_executing_(false)
         {}
 
-        const std::string& name() 
+        const std::string& name()
         {
           return desc_;
         }
-        
+
         void execution_is_starting()
         {
           is_executing_ = true;
@@ -65,12 +65,12 @@ namespace bandit {
           run_all(after_eaches_);
         }
 
-        bool hard_skip() 
+        bool hard_skip()
         {
           return hard_skip_;
         }
 
-        bool list_tests() 
+        bool list_tests()
         {
           return list_tests_;
         }

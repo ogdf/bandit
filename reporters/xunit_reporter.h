@@ -61,14 +61,14 @@ namespace bandit { namespace detail {
     void test_run_complete()
     {
       stm_ << "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
-      stm_ << "<testsuite name=\"bandit\" tests=\"" << specs_run_ << "\" errors=\"0\" failures=\"" 
+      stm_ << "<testsuite name=\"bandit\" tests=\"" << specs_run_ << "\" errors=\"0\" failures=\""
            << specs_failed_ << "\"";
-      
+
       if(specs_skipped_ > 0)
       {
         stm_ << " skipped=\"" << specs_skipped_ << "\"";
       }
-      
+
       stm_ << ">\n";
 
       stm_ << work_stm_.str();

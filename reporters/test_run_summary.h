@@ -8,8 +8,8 @@ namespace bandit { namespace detail {
     test_run_summary(int specs_run, int specs_failed, int specs_succeeded, int specs_skipped,
       const std::list<std::string>& failures, const std::list<std::string>& test_run_errors,
       const detail::colorizer& colorizer)
-      : specs_run_(specs_run), specs_succeeded_(specs_succeeded), specs_failed_(specs_failed), 
-      specs_skipped_(specs_skipped), failures_(failures), test_run_errors_(test_run_errors), 
+      : specs_run_(specs_run), specs_succeeded_(specs_succeeded), specs_failed_(specs_failed),
+      specs_skipped_(specs_skipped), failures_(failures), test_run_errors_(test_run_errors),
       colorizer_(colorizer)
     {}
 
@@ -48,14 +48,14 @@ namespace bandit { namespace detail {
         stm << colorizer_.red();
         stm << "There were failures!";
         stm << colorizer_.reset() << std::endl;
-        std::for_each(failures_.begin(), failures_.end(), 
+        std::for_each(failures_.begin(), failures_.end(),
             [&](const std::string& failure) {
               stm << failure << std::endl;
             });
         stm << std::endl;
       }
 
-      stm << "Test run complete. " << specs_run_ << " tests run. " << specs_succeeded_ << 
+      stm << "Test run complete. " << specs_run_ << " tests run. " << specs_succeeded_ <<
         " succeeded.";
 
       if(specs_skipped_ > 0)

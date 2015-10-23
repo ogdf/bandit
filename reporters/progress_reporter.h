@@ -12,7 +12,7 @@ namespace bandit { namespace detail {
 
 	progress_reporter& operator=(const progress_reporter&) { return *this; }
 
-    virtual void test_run_starting() 
+    virtual void test_run_starting()
     {
       specs_run_ = 0;
       specs_succeeded_ = 0;
@@ -26,12 +26,12 @@ namespace bandit { namespace detail {
     {
     }
 
-    virtual void context_starting(const char* desc) 
+    virtual void context_starting(const char* desc)
     {
       contexts_.push_back(std::string(desc));
     }
 
-    virtual void context_ended(const char*) 
+    virtual void context_ended(const char*)
     {
       contexts_.pop_back();
     }
@@ -39,12 +39,12 @@ namespace bandit { namespace detail {
     virtual void test_run_error(const char*, const struct test_run_error&)
     {}
 
-    void it_starting(const char*) 
+    void it_starting(const char*)
     {
       specs_run_++;
     }
 
-    void it_succeeded(const char*) 
+    void it_succeeded(const char*)
     {
       specs_succeeded_++;
     }
